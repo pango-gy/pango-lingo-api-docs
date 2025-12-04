@@ -221,7 +221,7 @@ API 키는 시스템 관리자가 `Config` 테이블에 다음 설정으로 등�
 ```json
 {
   "message": "번역 요청이 성공적으로 접수되었습니다.",
-  "articleId": 100,
+  "articleId": 1234567890,
   "targetRegions": ["en-us", "ja-jp"]
 }
 ```
@@ -255,7 +255,7 @@ API 키는 시스템 관리자가 `Config` 테이블에 다음 설정으로 등�
 
 ```json
 {
-  "articleId": 100,
+  "articleId": 1234567890,
   "translations": [
     {
       "region": "en-us",
@@ -314,7 +314,7 @@ API 키는 시스템 관리자가 `Config` 테이블에 다음 설정으로 등�
 ```json
 {
   "message": "기사가 성공적으로 승인되고 게시되었습니다.",
-  "articleId": 100,
+  "articleId": 1234567890,
   "publishedAt": "2024-01-01T00:00:00.000Z"
 }
 ```
