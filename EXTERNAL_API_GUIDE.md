@@ -173,13 +173,19 @@ API 키는 시스템 관리자가 `Config` 테이블에 다음 설정으로 등�
 
 ```json
 {
-  "id": 100,
+  "id": 1234567890,
   "externalId": "1234567890",
   "title": "기사 제목",
+  "subTitle": "기사 부제목",
   "status": "DRAFT",
   "message": "기사가 성공적으로 생성되었습니다."
 }
 ```
+
+**중요:**
+
+- `id`는 `externalId`와 동일한 값입니다. `externalId`로 전달한 값이 그대로 `Article.id`로 사용됩니다.
+- 이후 모든 API 호출 시 이 `id` 값을 사용하세요 (예: `/api/external/articles/{id}/translate`).
 
 **에러 응답:**
 
@@ -359,17 +365,22 @@ curl -X POST https://api.example.com/api/external/articles \
 
 ```json
 {
-  "id": 100,
+  "id": 1234567890,
   "externalId": "1234567890",
   "title": "새로운 기사",
-  "status": "DRAFT"
+  "subTitle": "테스트 기사 부제목",
+  "status": "DRAFT",
+  "message": "기사가 성공적으로 생성되었습니다."
 }
 ```
+
+**참고:** `id`는 `externalId`와 동일한 값입니다. 이후 API 호출 시 이 `id`를 사용하세요.
 
 ### 2단계: 번역 요청
 
 ```bash
-curl -X POST https://api.example.com/api/external/articles/100/translate \
+# 위에서 받은 id를 사용 (예: 1234567890)
+curl -X POST https://api.example.com/api/external/articles/1234567890/translate \
   -H "Content-Type: application/json" \
   -H "x-api-key: YOUR_API_KEY" \
   -d '{
@@ -382,7 +393,7 @@ curl -X POST https://api.example.com/api/external/articles/100/translate \
 ```json
 {
   "message": "번역 요청이 성공적으로 접수되었습니다.",
-  "articleId": 100,
+  "articleId": 1234567890,
   "targetRegions": ["en-us", "ja-jp"]
 }
 ```
@@ -390,7 +401,8 @@ curl -X POST https://api.example.com/api/external/articles/100/translate \
 ### 3단계: 번역 상태 조회 (폴링)
 
 ```bash
-curl https://api.example.com/api/external/articles/100/translations \
+# articleId를 사용 (예: 1234567890)
+curl https://api.example.com/api/external/articles/1234567890/translations \
   -H "x-api-key: YOUR_API_KEY"
 ```
 
@@ -398,7 +410,7 @@ curl https://api.example.com/api/external/articles/100/translations \
 
 ```json
 {
-  "articleId": 100,
+  "articleId": 1234567890,
   "translations": [
     {
       "region": "en-us",
@@ -422,7 +434,7 @@ curl https://api.example.com/api/external/articles/100/translations \
 
 ```json
 {
-  "articleId": 100,
+  "articleId": 1234567890,
   "translations": [
     {
       "region": "en-us",
@@ -445,7 +457,8 @@ curl https://api.example.com/api/external/articles/100/translations \
 ### 4단계: 기사 승인
 
 ```bash
-curl -X POST https://api.example.com/api/external/articles/100/approve \
+# articleId를 사용 (예: 1234567890)
+curl -X POST https://api.example.com/api/external/articles/1234567890/approve \
   -H "Content-Type: application/json" \
   -H "x-api-key: YOUR_API_KEY" \
   -d '{
@@ -458,7 +471,7 @@ curl -X POST https://api.example.com/api/external/articles/100/approve \
 ```json
 {
   "message": "기사가 성공적으로 승인되었습니다. 2024-01-01 오후 12:00:00에 게시됩니다.",
-  "articleId": 100,
+  "articleId": 1234567890,
   "publishedAt": "2024-01-01T12:00:00.000Z"
 }
 ```
@@ -467,15 +480,19 @@ curl -X POST https://api.example.com/api/external/articles/100/approve \
 
 ## 주의사항
 
-1. **externalId 중복 방지**: 동일한 `externalId`로 중복 생성 시 `409 Conflict` 오류가 발생합니다.
+1. **externalId와 id의 관계**: `externalId`로 전달한 값이 그대로 `Article.id`로 사용됩니다. 즉, `id`와 `externalId`는 동일한 값입니다. 이후 모든 API 호출 시 이 `id` 값을 경로 파라미터로 사용하세요.
 
-2. **번역 비동기 처리**: 번역 요청은 비동기로 처리되므로, 번역 상태 조회 API를 통해 주기적으로 상태를 확인해야 합니다.
+2. **externalId 중복 방지**: 동일한 `externalId`로 중복 생성 시 `409 Conflict` 오류가 발생합니다.
 
-3. **번역 상태 확인**: 번역이 완료되기 전에 승인하면, 번역 완료된 번역본만 게시됩니다.
+3. **번역 비동기 처리**: 번역 요청은 비동기로 처리되므로, 번역 상태 조회 API를 통해 주기적으로 상태를 확인해야 합니다.
 
-4. **미리보기 URL**: 번역 상태 조회 API에서 반환되는 `previewUrl`을 통해 번역된 기사 내용을 검토할 수 있습니다.
+4. **번역 상태 확인**: 번역이 완료되기 전에 승인하면, 번역 완료된 번역본만 게시됩니다.
 
-5. **지역 코드**: 지원되는 지역 코드는 시스템 설정에 따라 다를 수 있습니다. 일반적으로 `ko-kr`, `en-us`, `ja-jp`, `zh-cn` 등을 지원합니다.
+5. **미리보기 URL**: 번역 상태 조회 API에서 반환되는 `previewUrl`을 통해 번역된 기사 내용을 검토할 수 있습니다.
+
+6. **지역 코드**: 지원되는 지역 코드는 시스템 설정에 따라 다를 수 있습니다. 일반적으로 `ko-kr`, `en-us`, `ja-jp`, `zh-cn` 등을 지원합니다.
+
+7. **id 사용**: 기사 생성 후 반환되는 `id`는 `externalId`와 동일한 값입니다. 이후 번역 요청, 번역 상태 조회, 승인 등 모든 API 호출에서 이 `id`를 경로 파라미터로 사용하세요.
 
 ---
 
