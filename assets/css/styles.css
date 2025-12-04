@@ -241,6 +241,7 @@ code {
 }
 
 .content {
+    width: 100%;
     max-width: var(--content-max-width);
     margin: 0 auto;
     padding: 48px 40px 100px;
