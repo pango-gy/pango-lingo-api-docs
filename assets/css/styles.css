@@ -238,12 +238,13 @@ code {
     margin-left: var(--sidebar-width);
     padding-top: var(--header-height);
     min-height: 100vh;
+    display: flex;
+    justify-content: center;
 }
 
 .content {
     width: 100%;
     max-width: var(--content-max-width);
-    margin: 0 auto;
     padding: 48px 40px 100px;
 }
 
