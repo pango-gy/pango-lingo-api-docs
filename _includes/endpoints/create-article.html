@@ -1,0 +1,134 @@
+<section id="create-article">
+    <h2>API 엔드포인트</h2>
+    
+    <div class="endpoint-card">
+        <div class="endpoint-header">
+            <span class="method-badge post">POST</span>
+            <span class="endpoint-path">/api/external/articles</span>
+        </div>
+        <div class="endpoint-body">
+            <div class="endpoint-desc">
+                <p>워드프레스에서 사용 중인 고유 기사 ID를 포함하여 팡고링고 CMS에 새로운 기사를 생성합니다.</p>
+            </div>
+
+            <div class="param-section">
+                <div class="param-title">요청 파라미터</div>
+                <table class="param-table">
+                    <thead>
+                        <tr>
+                            <th>필드</th>
+                            <th>타입</th>
+                            <th>필수</th>
+                            <th>설명</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="param-name">externalId</span></td>
+                            <td><span class="param-type">string</span></td>
+                            <td><span class="param-required required">필수</span></td>
+                            <td>워드프레스 고유 기사 ID</td>
+                        </tr>
+                        <tr>
+                            <td><span class="param-name">title</span></td>
+                            <td><span class="param-type">string</span></td>
+                            <td><span class="param-required required">필수</span></td>
+                            <td>기사 제목</td>
+                        </tr>
+                        <tr>
+                            <td><span class="param-name">articleContent</span></td>
+                            <td><span class="param-type">string</span></td>
+                            <td><span class="param-required required">필수</span></td>
+                            <td>기사 내용 (HTML 지원)</td>
+                        </tr>
+                        <tr>
+                            <td><span class="param-name">subTitle</span></td>
+                            <td><span class="param-type">string</span></td>
+                            <td><span class="param-required optional">선택</span></td>
+                            <td>기사 부제목</td>
+                        </tr>
+                        <tr>
+                            <td><span class="param-name">thumbnailUrl</span></td>
+                            <td><span class="param-type">string</span></td>
+                            <td><span class="param-required optional">선택</span></td>
+                            <td>썸네일 이미지 URL</td>
+                        </tr>
+                        <tr>
+                            <td><span class="param-name">keyword</span></td>
+                            <td><span class="param-type">string</span></td>
+                            <td><span class="param-required optional">선택</span></td>
+                            <td>키워드 (쉼표로 구분)</td>
+                        </tr>
+                        <tr>
+                            <td><span class="param-name">categoryIds</span></td>
+                            <td><span class="param-type">array</span></td>
+                            <td><span class="param-required optional">선택</span></td>
+                            <td>카테고리 ID 목록</td>
+                        </tr>
+                        <tr>
+                            <td><span class="param-name">reporterIds</span></td>
+                            <td><span class="param-type">array</span></td>
+                            <td><span class="param-required optional">선택</span></td>
+                            <td>기자 ID 목록</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-label">요청 예시</span>
+                    <button class="copy-btn" onclick="copyCode(this)">
+                        <span>📋</span> 복사
+                    </button>
+                </div>
+                <pre><code class="language-json">{
+  "externalId": "1234567890",
+  "title": "기사 제목",
+  "subTitle": "기사 부제목",
+  "articleContent": "&lt;p&gt;기사 내용 HTML&lt;/p&gt;",
+  "thumbnailUrl": "https://example.com/image.jpg",
+  "keyword": "키워드1, 키워드2",
+  "categoryIds": [1, 2, 3],
+  "reporterIds": [1, 2]
+}</code></pre>
+            </div>
+
+            <div class="response-section">
+                <div class="response-status success">✓ 201 Created</div>
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="code-label">응답</span>
+                        <button class="copy-btn" onclick="copyCode(this)">
+                            <span>📋</span> 복사
+                        </button>
+                    </div>
+                    <pre><code class="language-json">{
+  "id": 100,
+  "externalId": "1234567890",
+  "title": "기사 제목",
+  "status": "DRAFT",
+  "message": "기사가 성공적으로 생성되었습니다."
+}</code></pre>
+                </div>
+            </div>
+
+            <h4>에러 응답</h4>
+            <div class="status-list">
+                <div class="status-item">
+                    <span class="status-code s4xx">400</span>
+                    <span>필수 필드 누락 또는 잘못된 요청</span>
+                </div>
+                <div class="status-item">
+                    <span class="status-code s4xx">409</span>
+                    <span>이미 존재하는 externalId</span>
+                </div>
+                <div class="status-item">
+                    <span class="status-code s5xx">500</span>
+                    <span>서버 오류</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+

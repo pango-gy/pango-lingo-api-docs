@@ -1,0 +1,40 @@
+# ========================================
+# 팡고링고 API 문서 - Jekyll 설정
+# ========================================
+
+# 사이트 기본 정보
+title: 팡고링고 API 문서
+description: 팡고링고 CMS의 다국어 기사 처리를 위한 외부 API 문서
+url: ""
+baseurl: ""
+
+# Jekyll 설정
+markdown: kramdown
+highlighter: rouge
+
+# 파일 포함/제외 설정
+include:
+  - _layouts
+  - _includes
+  - assets
+
+exclude:
+  - README.md
+  - Gemfile
+  - Gemfile.lock
+  - .gitignore
+  - node_modules
+  - vendor
+
+# 기본 레이아웃 설정
+defaults:
+  - scope:
+      path: ""
+    values:
+      layout: default
+
+# Kramdown 설정
+kramdown:
+  input: GFM
+  hard_wrap: false
+  syntax_highlighter: rouge

@@ -1,0 +1,115 @@
+<section id="translate-article">
+    <div class="endpoint-card">
+        <div class="endpoint-header">
+            <span class="method-badge post">POST</span>
+            <span class="endpoint-path">/api/external/articles/{id}/translate</span>
+        </div>
+        <div class="endpoint-body">
+            <div class="endpoint-desc">
+                <p>생성된 기사에 대해 지정한 언어로 번역을 요청합니다. 번역은 비동기로 처리됩니다.</p>
+            </div>
+
+            <div class="param-section">
+                <div class="param-title">경로 파라미터</div>
+                <table class="param-table">
+                    <thead>
+                        <tr>
+                            <th>필드</th>
+                            <th>타입</th>
+                            <th>설명</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="param-name">id</span></td>
+                            <td><span class="param-type">integer</span></td>
+                            <td>원문 기사 ID</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="param-section">
+                <div class="param-title">요청 파라미터</div>
+                <table class="param-table">
+                    <thead>
+                        <tr>
+                            <th>필드</th>
+                            <th>타입</th>
+                            <th>필수</th>
+                            <th>설명</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="param-name">regions</span></td>
+                            <td><span class="param-type">array</span></td>
+                            <td><span class="param-required required">필수</span></td>
+                            <td>번역 대상 언어 코드 목록 (예: ["en-us", "ja-jp"])</td>
+                        </tr>
+                        <tr>
+                            <td><span class="param-name">prompt</span></td>
+                            <td><span class="param-type">string</span></td>
+                            <td><span class="param-required optional">선택</span></td>
+                            <td>번역 시 추가 지시사항</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-label">요청 예시</span>
+                    <button class="copy-btn" onclick="copyCode(this)">
+                        <span>📋</span> 복사
+                    </button>
+                </div>
+                <pre><code class="language-json">{
+  "regions": ["en-us", "ja-jp"],
+  "prompt": "번역 시 추가 지시사항"
+}</code></pre>
+            </div>
+
+            <div class="response-section">
+                <div class="response-status info">✓ 202 Accepted</div>
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="code-label">응답</span>
+                        <button class="copy-btn" onclick="copyCode(this)">
+                            <span>📋</span> 복사
+                        </button>
+                    </div>
+                    <pre><code class="language-json">{
+  "message": "번역 요청이 성공적으로 접수되었습니다.",
+  "articleId": 100,
+  "targetRegions": ["en-us", "ja-jp"]
+}</code></pre>
+                </div>
+            </div>
+
+            <div class="info-box warning">
+                <div class="info-box-icon">⚠️</div>
+                <div class="info-box-content">
+                    <p>번역 요청은 <strong>비동기로 처리</strong>되며, 즉시 결과를 반환하지 않습니다. 번역 진행 상태는 <strong>번역 상태 조회 API</strong>를 통해 확인하세요.</p>
+                </div>
+            </div>
+
+            <h4>에러 응답</h4>
+            <div class="status-list">
+                <div class="status-item">
+                    <span class="status-code s4xx">400</span>
+                    <span>유효하지 않은 지역 코드</span>
+                </div>
+                <div class="status-item">
+                    <span class="status-code s4xx">404</span>
+                    <span>기사를 찾을 수 없음</span>
+                </div>
+                <div class="status-item">
+                    <span class="status-code s5xx">500</span>
+                    <span>서버 오류</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+

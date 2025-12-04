@@ -1,0 +1,11 @@
+<section id="notes">
+    <h2>주의사항</h2>
+    <ul class="notes-list">
+        <li><strong>externalId 중복 방지:</strong> 동일한 <code>externalId</code>로 중복 생성 시 <code>409 Conflict</code> 오류가 발생합니다.</li>
+        <li><strong>번역 비동기 처리:</strong> 번역 요청은 비동기로 처리되므로, 번역 상태 조회 API를 통해 주기적으로 상태를 확인해야 합니다.</li>
+        <li><strong>번역 상태 확인:</strong> 번역이 완료되기 전에 승인하면, 번역 완료된 번역본만 게시됩니다.</li>
+        <li><strong>미리보기 URL:</strong> 번역 상태 조회 API에서 반환되는 <code>previewUrl</code>을 통해 번역된 기사 내용을 검토할 수 있습니다.</li>
+        <li><strong>지역 코드:</strong> 지원되는 지역 코드는 시스템 설정에 따라 다를 수 있습니다. 일반적으로 <code>ko-kr</code>, <code>en-us</code>, <code>ja-jp</code>, <code>zh-cn</code> 등을 지원합니다.</li>
+    </ul>
+</section>
+

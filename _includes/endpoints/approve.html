@@ -1,0 +1,108 @@
+<section id="approve-article">
+    <div class="endpoint-card">
+        <div class="endpoint-header">
+            <span class="method-badge post">POST</span>
+            <span class="endpoint-path">/api/external/articles/{id}/approve</span>
+        </div>
+        <div class="endpoint-body">
+            <div class="endpoint-desc">
+                <p>번역 검수 후 기사를 승인하여 게시 상태를 최종 확정합니다.</p>
+            </div>
+
+            <div class="param-section">
+                <div class="param-title">경로 파라미터</div>
+                <table class="param-table">
+                    <thead>
+                        <tr>
+                            <th>필드</th>
+                            <th>타입</th>
+                            <th>설명</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="param-name">id</span></td>
+                            <td><span class="param-type">integer</span></td>
+                            <td>원문 기사 ID</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="param-section">
+                <div class="param-title">요청 파라미터</div>
+                <table class="param-table">
+                    <thead>
+                        <tr>
+                            <th>필드</th>
+                            <th>타입</th>
+                            <th>필수</th>
+                            <th>설명</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="param-name">publishAt</span></td>
+                            <td><span class="param-type">string</span></td>
+                            <td><span class="param-required optional">선택</span></td>
+                            <td>게시 날짜 (ISO 8601 형식, 기본값: 현재 시간)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-label">요청 예시</span>
+                    <button class="copy-btn" onclick="copyCode(this)">
+                        <span>📋</span> 복사
+                    </button>
+                </div>
+                <pre><code class="language-json">{
+  "publishAt": "2024-01-01T00:00:00.000Z"
+}</code></pre>
+            </div>
+
+            <div class="response-section">
+                <div class="response-status success">✓ 200 OK</div>
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="code-label">응답</span>
+                        <button class="copy-btn" onclick="copyCode(this)">
+                            <span>📋</span> 복사
+                        </button>
+                    </div>
+                    <pre><code class="language-json">{
+  "message": "기사가 성공적으로 승인되고 게시되었습니다.",
+  "articleId": 100,
+  "publishedAt": "2024-01-01T00:00:00.000Z"
+}</code></pre>
+                </div>
+            </div>
+
+            <div class="info-box tip">
+                <div class="info-box-icon">💡</div>
+                <div class="info-box-content">
+                    <p>승인 시 번역 완료된 번역본(<code>status: SUCCESS</code>)만 게시됩니다. 번역 진행 중이거나 실패한 번역본은 게시되지 않습니다.</p>
+                </div>
+            </div>
+
+            <h4>에러 응답</h4>
+            <div class="status-list">
+                <div class="status-item">
+                    <span class="status-code s4xx">400</span>
+                    <span>잘못된 기사 ID</span>
+                </div>
+                <div class="status-item">
+                    <span class="status-code s4xx">404</span>
+                    <span>기사를 찾을 수 없음</span>
+                </div>
+                <div class="status-item">
+                    <span class="status-code s5xx">500</span>
+                    <span>서버 오류</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+

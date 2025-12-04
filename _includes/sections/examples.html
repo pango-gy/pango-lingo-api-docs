@@ -1,0 +1,144 @@
+<section id="examples">
+    <h2>전체 플로우 예시</h2>
+    <p>기사 생성부터 최종 게시까지의 완전한 워크플로우를 살펴보세요.</p>
+
+    <div class="flow-steps">
+        <div class="flow-step" data-step="1">
+            <div class="flow-step-title">원문 기사 생성</div>
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-label">cURL</span>
+                    <button class="copy-btn" onclick="copyCode(this)">
+                        <span>📋</span> 복사
+                    </button>
+                </div>
+                <pre><code class="language-bash">curl -X POST https://api.example.com/api/external/articles \
+  -H "Content-Type: application/json" \
+  -H "x-api-key: YOUR_API_KEY" \
+  -d '{
+    "externalId": "1234567890",
+    "title": "새로운 기사",
+    "articleContent": "&lt;p&gt;기사 내용&lt;/p&gt;"
+  }'</code></pre>
+            </div>
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-label">응답</span>
+                    <button class="copy-btn" onclick="copyCode(this)">
+                        <span>📋</span> 복사
+                    </button>
+                </div>
+                <pre><code class="language-json">{
+  "id": 100,
+  "externalId": "1234567890",
+  "title": "새로운 기사",
+  "status": "DRAFT"
+}</code></pre>
+            </div>
+        </div>
+
+        <div class="flow-step" data-step="2">
+            <div class="flow-step-title">번역 요청</div>
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-label">cURL</span>
+                    <button class="copy-btn" onclick="copyCode(this)">
+                        <span>📋</span> 복사
+                    </button>
+                </div>
+                <pre><code class="language-bash">curl -X POST https://api.example.com/api/external/articles/100/translate \
+  -H "Content-Type: application/json" \
+  -H "x-api-key: YOUR_API_KEY" \
+  -d '{
+    "regions": ["en-us", "ja-jp"]
+  }'</code></pre>
+            </div>
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-label">응답</span>
+                    <button class="copy-btn" onclick="copyCode(this)">
+                        <span>📋</span> 복사
+                    </button>
+                </div>
+                <pre><code class="language-json">{
+  "message": "번역 요청이 성공적으로 접수되었습니다.",
+  "articleId": 100,
+  "targetRegions": ["en-us", "ja-jp"]
+}</code></pre>
+            </div>
+        </div>
+
+        <div class="flow-step" data-step="3">
+            <div class="flow-step-title">번역 상태 조회 (폴링)</div>
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-label">cURL</span>
+                    <button class="copy-btn" onclick="copyCode(this)">
+                        <span>📋</span> 복사
+                    </button>
+                </div>
+                <pre><code class="language-bash">curl https://api.example.com/api/external/articles/100/translations \
+  -H "x-api-key: YOUR_API_KEY"</code></pre>
+            </div>
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-label">응답 (번역 완료)</span>
+                    <button class="copy-btn" onclick="copyCode(this)">
+                        <span>📋</span> 복사
+                    </button>
+                </div>
+                <pre><code class="language-json">{
+  "articleId": 100,
+  "translations": [
+    {
+      "region": "en-us",
+      "status": "SUCCESS",
+      "previewUrl": "https://example.com/preview/en-us/...",
+      "title": "New Article",
+      "updatedAt": "2024-01-01T01:00:00.000Z"
+    },
+    {
+      "region": "ja-jp",
+      "status": "SUCCESS",
+      "previewUrl": "https://example.com/preview/ja-jp/...",
+      "title": "新しい記事",
+      "updatedAt": "2024-01-01T01:00:00.000Z"
+    }
+  ]
+}</code></pre>
+            </div>
+        </div>
+
+        <div class="flow-step" data-step="4">
+            <div class="flow-step-title">기사 승인</div>
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-label">cURL</span>
+                    <button class="copy-btn" onclick="copyCode(this)">
+                        <span>📋</span> 복사
+                    </button>
+                </div>
+                <pre><code class="language-bash">curl -X POST https://api.example.com/api/external/articles/100/approve \
+  -H "Content-Type: application/json" \
+  -H "x-api-key: YOUR_API_KEY" \
+  -d '{
+    "publishAt": "2024-01-01T12:00:00.000Z"
+  }'</code></pre>
+            </div>
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-label">응답</span>
+                    <button class="copy-btn" onclick="copyCode(this)">
+                        <span>📋</span> 복사
+                    </button>
+                </div>
+                <pre><code class="language-json">{
+  "message": "기사가 성공적으로 승인되었습니다. 2024-01-01 오후 12:00:00에 게시됩니다.",
+  "articleId": 100,
+  "publishedAt": "2024-01-01T12:00:00.000Z"
+}</code></pre>
+            </div>
+        </div>
+    </div>
+</section>
+

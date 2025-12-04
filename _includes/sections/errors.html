@@ -1,0 +1,55 @@
+<section id="errors">
+    <h2>에러 처리</h2>
+    <p>모든 API는 표준 HTTP 상태 코드를 사용합니다.</p>
+
+    <h3>HTTP 상태 코드</h3>
+    <div class="status-list">
+        <div class="status-item">
+            <span class="status-code s2xx">200</span>
+            <span>성공</span>
+        </div>
+        <div class="status-item">
+            <span class="status-code s2xx">201</span>
+            <span>생성 성공</span>
+        </div>
+        <div class="status-item">
+            <span class="status-code s2xx">202</span>
+            <span>요청 접수 (비동기 처리)</span>
+        </div>
+        <div class="status-item">
+            <span class="status-code s4xx">400</span>
+            <span>잘못된 요청</span>
+        </div>
+        <div class="status-item">
+            <span class="status-code s4xx">401</span>
+            <span>인증 실패</span>
+        </div>
+        <div class="status-item">
+            <span class="status-code s4xx">404</span>
+            <span>리소스를 찾을 수 없음</span>
+        </div>
+        <div class="status-item">
+            <span class="status-code s4xx">409</span>
+            <span>리소스 충돌 (중복)</span>
+        </div>
+        <div class="status-item">
+            <span class="status-code s5xx">500</span>
+            <span>서버 오류</span>
+        </div>
+    </div>
+
+    <h3>에러 응답 형식</h3>
+    <div class="code-block">
+        <div class="code-header">
+            <span class="code-label">에러 응답</span>
+            <button class="copy-btn" onclick="copyCode(this)">
+                <span>📋</span> 복사
+            </button>
+        </div>
+        <pre><code class="language-json">{
+  "error": "에러 메시지",
+  "details": "상세 에러 정보 (선택)"
+}</code></pre>
+    </div>
+</section>
+

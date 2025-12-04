@@ -1,0 +1,97 @@
+<section id="get-translations">
+    <div class="endpoint-card">
+        <div class="endpoint-header">
+            <span class="method-badge get">GET</span>
+            <span class="endpoint-path">/api/external/articles/{id}/translations</span>
+        </div>
+        <div class="endpoint-body">
+            <div class="endpoint-desc">
+                <p>원문 기사 ID를 기준으로 모든 번역본의 상태와 결과를 조회합니다.</p>
+            </div>
+
+            <div class="param-section">
+                <div class="param-title">경로 파라미터</div>
+                <table class="param-table">
+                    <thead>
+                        <tr>
+                            <th>필드</th>
+                            <th>타입</th>
+                            <th>설명</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="param-name">id</span></td>
+                            <td><span class="param-type">integer</span></td>
+                            <td>원문 기사 ID</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="response-section">
+                <div class="response-status success">✓ 200 OK</div>
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="code-label">응답</span>
+                        <button class="copy-btn" onclick="copyCode(this)">
+                            <span>📋</span> 복사
+                        </button>
+                    </div>
+                    <pre><code class="language-json">{
+  "articleId": 100,
+  "translations": [
+    {
+      "region": "en-us",
+      "status": "SUCCESS",
+      "previewUrl": "https://example.com/preview/en-us/desktop/preview?returnUrl=/en-us/articles/101",
+      "title": "Article Title",
+      "updatedAt": "2024-01-01T00:00:00.000Z"
+    },
+    {
+      "region": "ja-jp",
+      "status": "PROGRESS",
+      "previewUrl": "https://example.com/preview/ja-jp/desktop/preview?returnUrl=/ja-jp/articles/102",
+      "title": "",
+      "updatedAt": "2024-01-01T00:00:00.000Z"
+    }
+  ]
+}</code></pre>
+                </div>
+            </div>
+
+            <h4>번역 상태</h4>
+            <div class="translation-status-grid">
+                <div class="translation-status-item success">
+                    <div class="status-name">SUCCESS</div>
+                    <div class="status-desc">번역 완료</div>
+                </div>
+                <div class="translation-status-item progress">
+                    <div class="status-name">PROGRESS</div>
+                    <div class="status-desc">번역 진행 중</div>
+                </div>
+                <div class="translation-status-item failed">
+                    <div class="status-name">FAILED</div>
+                    <div class="status-desc">번역 실패</div>
+                </div>
+            </div>
+
+            <h4>에러 응답</h4>
+            <div class="status-list">
+                <div class="status-item">
+                    <span class="status-code s4xx">400</span>
+                    <span>잘못된 기사 ID</span>
+                </div>
+                <div class="status-item">
+                    <span class="status-code s4xx">404</span>
+                    <span>기사를 찾을 수 없음</span>
+                </div>
+                <div class="status-item">
+                    <span class="status-code s5xx">500</span>
+                    <span>서버 오류</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+

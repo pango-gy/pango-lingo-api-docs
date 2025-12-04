@@ -1,0 +1,59 @@
+<section id="authentication">
+    <h2>인증</h2>
+    <p>
+        모든 API 요청은 인증이 필요합니다. 다음 방법 중 하나를 사용하여 API 키를 전달하세요.
+    </p>
+
+    <h3>인증 방법</h3>
+    <div class="auth-methods">
+        <div class="auth-method">
+            <span class="auth-method-label">Header (권장)</span>
+            <code class="auth-method-value">x-api-key: YOUR_API_KEY</code>
+        </div>
+        <div class="auth-method">
+            <span class="auth-method-label">Header (대안)</span>
+            <code class="auth-method-value">X-API-Key: YOUR_API_KEY</code>
+        </div>
+        <div class="auth-method">
+            <span class="auth-method-label">Query Param</span>
+            <code class="auth-method-value">?apiKey=YOUR_API_KEY</code>
+        </div>
+        <div class="auth-method">
+            <span class="auth-method-label">Bearer Token</span>
+            <code class="auth-method-value">Authorization: Bearer YOUR_API_KEY</code>
+        </div>
+    </div>
+
+    <div class="info-box note">
+        <div class="info-box-icon">ℹ️</div>
+        <div class="info-box-content">
+            <p><strong>API 키 설정:</strong> API 키는 시스템 관리자가 <code>Config</code> 테이블에 <code>configType: BASIC_CONFIG</code>, <code>key: api_key</code>로 등록해야 합니다.</p>
+        </div>
+    </div>
+
+    <h3>에러 응답</h3>
+    <div class="code-block">
+        <div class="code-header">
+            <span class="code-label">401 Unauthorized - API 키 누락</span>
+            <button class="copy-btn" onclick="copyCode(this)">
+                <span>📋</span> 복사
+            </button>
+        </div>
+        <pre><code class="language-json">{
+  "error": "API 키가 필요합니다. x-api-key 헤더 또는 apiKey 쿼리 파라미터를 제공하세요."
+}</code></pre>
+    </div>
+
+    <div class="code-block">
+        <div class="code-header">
+            <span class="code-label">401 Unauthorized - 유효하지 않은 API 키</span>
+            <button class="copy-btn" onclick="copyCode(this)">
+                <span>📋</span> 복사
+            </button>
+        </div>
+        <pre><code class="language-json">{
+  "error": "유효하지 않은 API 키입니다."
+}</code></pre>
+    </div>
+</section>
+
