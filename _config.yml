@@ -5,8 +5,8 @@
 # 사이트 기본 정보
 title: 팡고링고 API 문서
 description: 팡고링고 CMS의 다국어 기사 처리를 위한 외부 API 문서
-url: ""
-baseurl: ""
+url: "https://pango-gy.github.io"
+baseurl: "/pango-lingo-api-docs"
 
 # Jekyll 설정
 markdown: kramdown
