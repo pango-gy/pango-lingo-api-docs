@@ -1,0 +1,87 @@
+<section id="get-categories">
+    <div class="endpoint-card">
+        <div class="endpoint-header">
+            <span class="method-badge get">GET</span>
+            <span class="endpoint-path">/api/external/categories</span>
+        </div>
+        <div class="endpoint-body">
+            <div class="endpoint-desc">
+                <p>카테고리 목록을 조회합니다. RSS 활성화 여부로 필터링 가능합니다.</p>
+            </div>
+
+            <div class="param-section">
+                <div class="param-title">쿼리 파라미터</div>
+                <table class="param-table">
+                    <thead>
+                        <tr>
+                            <th>필드</th>
+                            <th>타입</th>
+                            <th>필수</th>
+                            <th>설명</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="param-name">rssEnabled</span></td>
+                            <td><span class="param-type">boolean</span></td>
+                            <td><span class="param-required optional">선택</span></td>
+                            <td>RSS 활성화 여부로 필터링 (true, false)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="response-section">
+                <div class="response-status success">✓ 200 OK</div>
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="code-label">응답</span>
+                        <button class="copy-btn" onclick="copyCode(this)">
+                            <span>📋</span> 복사
+                        </button>
+                    </div>
+                    <pre><code class="language-json">[
+  {
+    "id": 1,
+    "name": "정치",
+    "code": "politics",
+    "regionCode": "ko-kr",
+    "parentCategoryId": null,
+    "rssEnabled": true,
+    "rssDescription": "정치 뉴스",
+    "rssItemCount": 20,
+    "rssUpdateInterval": 60,
+    "sortOrder": 1,
+    "article_count": 150,
+    "childCategories": [
+      {
+        "id": 2,
+        "name": "국회",
+        "code": "parliament",
+        "regionCode": "ko-kr",
+        "parentCategoryId": 1,
+        "rssEnabled": true,
+        "sortOrder": 1,
+        "article_count": 50
+      }
+    ]
+  }
+]</code></pre>
+                </div>
+            </div>
+
+            <h4>에러 응답</h4>
+            <div class="status-list">
+                <div class="status-item">
+                    <span class="status-code s4xx">401</span>
+                    <span>인증 실패</span>
+                </div>
+                <div class="status-item">
+                    <span class="status-code s5xx">500</span>
+                    <span>서버 오류</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
