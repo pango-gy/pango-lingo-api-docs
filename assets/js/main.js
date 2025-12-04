@@ -12,7 +12,20 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // 모바일 사이드바 링크 클릭 시 닫기
     initMobileSidebarClose();
+    
+    // 현재 연도 설정
+    setCurrentYear();
 });
+
+/**
+ * 푸터에 현재 연도 설정
+ */
+function setCurrentYear() {
+    const yearElement = document.getElementById('current-year');
+    if (yearElement) {
+        yearElement.textContent = new Date().getFullYear();
+    }
+}
 
 /**
  * 구문 하이라이팅 초기화
