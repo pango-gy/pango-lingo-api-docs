@@ -25,9 +25,9 @@
                     <tbody>
                         <tr>
                             <td><span class="param-name">externalId</span></td>
-                            <td><span class="param-type">string</span></td>
+                            <td><span class="param-type">Long</span></td>
                             <td><span class="param-required required">필수</span></td>
-                            <td>워드프레스 고유 기사 ID</td>
+                            <td>워드프레스 고유 기사 ID (이 값이 Article.id로 사용됨)</td>
                         </tr>
                         <tr>
                             <td><span class="param-name">title</span></td>
@@ -104,12 +104,20 @@
                         </button>
                     </div>
                     <pre><code class="language-json">{
-  "id": 100,
+  "id": 1234567890,
   "externalId": "1234567890",
   "title": "기사 제목",
+  "subTitle": "기사 부제목",
   "status": "DRAFT",
   "message": "기사가 성공적으로 생성되었습니다."
 }</code></pre>
+                </div>
+            </div>
+
+            <div class="info-box warning">
+                <div class="info-box-icon">!</div>
+                <div class="info-box-content">
+                    <p><strong>중요:</strong> <code>id</code>는 <code>externalId</code>와 동일한 값입니다. <code>externalId</code>로 전달한 값이 그대로 <code>Article.id</code>로 사용됩니다. 이후 모든 API 호출 시 이 <code>id</code> 값을 사용하세요 (예: <code>/api/external/articles/{id}/translate</code>).</p>
                 </div>
             </div>
 
