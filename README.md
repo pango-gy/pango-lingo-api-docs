@@ -5,7 +5,7 @@
 ## 🌐 라이브 문서
 
 GitHub Pages를 통해 배포된 문서를 확인하세요:
-**[https://[your-username].github.io/pango-lingo-api-docs](https://[your-username].github.io/pango-lingo-api-docs)**
+**[https://pango-gy.github.io/pango-lingo-api-docs](https://pango-gy.github.io/pango-lingo-api-docs)**
 
 ## 🚀 GitHub Pages 배포 방법
 
@@ -20,7 +20,7 @@ GitHub Pages를 통해 배포된 문서를 확인하세요:
    - `Save` 클릭
 
 3. **배포 확인**
-   - 몇 분 후 `https://[your-username].github.io/pango-lingo-api-docs`에서 확인
+   - 몇 분 후 `https://pango-gy.github.io/pango-lingo-api-docs`에서 확인
 
 ## 📁 프로젝트 구조 (Jekyll 템플릿)
 
