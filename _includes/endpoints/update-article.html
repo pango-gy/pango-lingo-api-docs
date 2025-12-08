@@ -1,0 +1,238 @@
+<section id="update-article">
+    <div class="endpoint-card">
+        <div class="endpoint-header">
+            <span class="method-badge put">PUT</span>
+            <span class="endpoint-path">/api/external/articles/{id}</span>
+        </div>
+        <div class="endpoint-body">
+            <div class="endpoint-desc">
+                <p>생성된 기사 원본의 내용을 수정합니다. 변경된 필드만 업데이트되며, 번역본(RegionalArticle)도 함께 업데이트됩니다.</p>
+            </div>
+
+            <div class="param-section">
+                <div class="param-title">경로 파라미터</div>
+                <table class="param-table">
+                    <thead>
+                        <tr>
+                            <th>필드</th>
+                            <th>타입</th>
+                            <th>설명</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="param-name">id</span></td>
+                            <td><span class="param-type">integer</span></td>
+                            <td>원문 기사 ID</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="param-section">
+                <div class="param-title">요청 파라미터</div>
+                <table class="param-table">
+                    <thead>
+                        <tr>
+                            <th>필드</th>
+                            <th>타입</th>
+                            <th>필수</th>
+                            <th>설명</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="param-name">title</span></td>
+                            <td><span class="param-type">string</span></td>
+                            <td><span class="param-required optional">선택</span></td>
+                            <td>기사 제목</td>
+                        </tr>
+                        <tr>
+                            <td><span class="param-name">subTitle</span></td>
+                            <td><span class="param-type">string</span></td>
+                            <td><span class="param-required optional">선택</span></td>
+                            <td>기사 부제목</td>
+                        </tr>
+                        <tr>
+                            <td><span class="param-name">articleContent</span></td>
+                            <td><span class="param-type">string</span></td>
+                            <td><span class="param-required optional">선택</span></td>
+                            <td>기사 내용 (HTML 지원)</td>
+                        </tr>
+                        <tr>
+                            <td><span class="param-name">thumbnailUrl</span></td>
+                            <td><span class="param-type">string</span></td>
+                            <td><span class="param-required optional">선택</span></td>
+                            <td>썸네일 이미지 URL</td>
+                        </tr>
+                        <tr>
+                            <td><span class="param-name">keyword</span></td>
+                            <td><span class="param-type">string</span></td>
+                            <td><span class="param-required optional">선택</span></td>
+                            <td>키워드</td>
+                        </tr>
+                        <tr>
+                            <td><span class="param-name">categoryIds</span></td>
+                            <td><span class="param-type">array</span></td>
+                            <td><span class="param-required optional">선택</span></td>
+                            <td>카테고리 ID 목록 (전체 교체)</td>
+                        </tr>
+                        <tr>
+                            <td><span class="param-name">reporterIds</span></td>
+                            <td><span class="param-type">array</span></td>
+                            <td><span class="param-required optional">선택</span></td>
+                            <td>기자 ID 목록 (전체 교체)</td>
+                        </tr>
+                        <tr>
+                            <td><span class="param-name">relatedArticleIds</span></td>
+                            <td><span class="param-type">array</span></td>
+                            <td><span class="param-required optional">선택</span></td>
+                            <td>관련 기사 ID 목록 (전체 교체)</td>
+                        </tr>
+                        <tr>
+                            <td><span class="param-name">grade</span></td>
+                            <td><span class="param-type">string</span></td>
+                            <td><span class="param-required optional">선택</span></td>
+                            <td>기사 등급 (NORMAL, IMPORTANT, HEADLINE)</td>
+                        </tr>
+                        <tr>
+                            <td><span class="param-name">status</span></td>
+                            <td><span class="param-type">string</span></td>
+                            <td><span class="param-required optional">선택</span></td>
+                            <td>기사 상태 (DRAFT, REVIEW, PUBLISHED, REJECTED, DELETED)</td>
+                        </tr>
+                        <tr>
+                            <td><span class="param-name">type</span></td>
+                            <td><span class="param-type">string</span></td>
+                            <td><span class="param-required optional">선택</span></td>
+                            <td>기사 타입 (ARTICLE 등)</td>
+                        </tr>
+                        <tr>
+                            <td><span class="param-name">exposureStartTime</span></td>
+                            <td><span class="param-type">string</span></td>
+                            <td><span class="param-required optional">선택</span></td>
+                            <td>노출 시작 시간 (ISO 8601 형식)</td>
+                        </tr>
+                        <tr>
+                            <td><span class="param-name">exposureEndTime</span></td>
+                            <td><span class="param-type">string</span></td>
+                            <td><span class="param-required optional">선택</span></td>
+                            <td>노출 종료 시간 (ISO 8601 형식)</td>
+                        </tr>
+                        <tr>
+                            <td><span class="param-name">isMemberOnly</span></td>
+                            <td><span class="param-type">boolean</span></td>
+                            <td><span class="param-required optional">선택</span></td>
+                            <td>회원 전용 여부</td>
+                        </tr>
+                        <tr>
+                            <td><span class="param-name">webhookTriggerEnabled</span></td>
+                            <td><span class="param-type">boolean</span></td>
+                            <td><span class="param-required optional">선택</span></td>
+                            <td>웹훅 트리거 활성화 여부</td>
+                        </tr>
+                        <tr>
+                            <td><span class="param-name">webPushEnabled</span></td>
+                            <td><span class="param-type">boolean</span></td>
+                            <td><span class="param-required optional">선택</span></td>
+                            <td>웹푸시 전송 활성화 여부</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-label">요청 예시</span>
+                    <button class="copy-btn" onclick="copyCode(this)">
+                        <span>📋</span> 복사
+                    </button>
+                </div>
+                <pre><code class="language-json">{
+  "title": "수정된 기사 제목",
+  "subTitle": "수정된 기사 부제목",
+  "articleContent": "&lt;p&gt;수정된 기사 내용 HTML&lt;/p&gt;",
+  "thumbnailUrl": "https://example.com/new-image.jpg",
+  "keyword": "수정된 키워드",
+  "categoryIds": [1, 2, 3],
+  "reporterIds": [1, 2],
+  "relatedArticleIds": [10, 20],
+  "grade": "IMPORTANT",
+  "status": "REVIEW",
+  "type": "ARTICLE",
+  "exposureStartTime": "2024-01-01T00:00:00.000Z",
+  "exposureEndTime": "2024-01-31T23:59:59.000Z",
+  "isMemberOnly": false,
+  "webhookTriggerEnabled": true,
+  "webPushEnabled": false
+}</code></pre>
+            </div>
+
+            <div class="response-section">
+                <div class="response-status success">✓ 200 OK</div>
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="code-label">응답</span>
+                        <button class="copy-btn" onclick="copyCode(this)">
+                            <span>📋</span> 복사
+                        </button>
+                    </div>
+                    <pre><code class="language-json">{
+  "message": "기사가 성공적으로 수정되었습니다.",
+  "article": {
+    "id": 1234567890,
+    "title": "수정된 기사 제목",
+    "subTitle": "수정된 기사 부제목",
+    "articleContent": "&lt;p&gt;수정된 기사 내용 HTML&lt;/p&gt;",
+    "status": "REVIEW",
+    "categories": [
+      {
+        "category": {
+          "id": 1,
+          "name": "정치",
+          "code": "politics"
+        }
+      }
+    ],
+    "reporters": [
+      {
+        "reporter": {
+          "id": 1,
+          "name": "홍길동",
+          "email": "hong@example.com"
+        }
+      }
+    ]
+  }
+}</code></pre>
+                </div>
+            </div>
+
+            <div class="info-box tip">
+                <div class="info-box-icon">TIP</div>
+                <div class="info-box-content">
+                    <p><strong>중요:</strong> 요청 본문에 포함된 필드만 업데이트됩니다. 포함되지 않은 필드는 기존 값이 유지됩니다.</p>
+                    <p><strong>주의:</strong> <code>categoryIds</code>, <code>reporterIds</code>, <code>relatedArticleIds</code>를 전달하면 기존 관계가 모두 삭제되고 새로운 관계로 교체됩니다.</p>
+                    <p>기사 수정 시 한국어 번역본(ko-kr)도 함께 업데이트됩니다. 썸네일 이미지는 S3에 자동으로 복사되어 지역별 폴더에 저장됩니다.</p>
+                </div>
+            </div>
+
+            <h4>에러 응답</h4>
+            <div class="status-list">
+                <div class="status-item">
+                    <span class="status-code s4xx">400</span>
+                    <span>잘못된 기사 ID 또는 잘못된 요청</span>
+                </div>
+                <div class="status-item">
+                    <span class="status-code s4xx">404</span>
+                    <span>기사를 찾을 수 없음</span>
+                </div>
+                <div class="status-item">
+                    <span class="status-code s5xx">500</span>
+                    <span>서버 오류</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+

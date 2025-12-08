@@ -1,0 +1,92 @@
+<section id="cancel-publish">
+    <div class="endpoint-card">
+        <div class="endpoint-header">
+            <span class="method-badge delete">DELETE</span>
+            <span class="endpoint-path">/api/external/articles/{id}/cancel</span>
+        </div>
+        <div class="endpoint-body">
+            <div class="endpoint-desc">
+                <p>게시된 기사를 취소하고 원본 기사 상태를 DRAFT로 변경합니다. PublishedArticle 및 관련 데이터가 모두 삭제되며, 소셜 미디어 포스트(트위터, 페이스북)도 함께 삭제됩니다.</p>
+            </div>
+
+            <div class="param-section">
+                <div class="param-title">경로 파라미터</div>
+                <table class="param-table">
+                    <thead>
+                        <tr>
+                            <th>필드</th>
+                            <th>타입</th>
+                            <th>설명</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="param-name">id</span></td>
+                            <td><span class="param-type">integer</span></td>
+                            <td>원문 기사 ID</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-label">요청 예시</span>
+                    <button class="copy-btn" onclick="copyCode(this)">
+                        <span>📋</span> 복사
+                    </button>
+                </div>
+                <pre><code class="language-bash">curl -X DELETE https://api.example.com/api/external/articles/1234567890/cancel \
+  -H "x-api-key: YOUR_API_KEY"</code></pre>
+            </div>
+
+            <div class="response-section">
+                <div class="response-status success">✓ 200 OK</div>
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="code-label">응답</span>
+                        <button class="copy-btn" onclick="copyCode(this)">
+                            <span>📋</span> 복사
+                        </button>
+                    </div>
+                    <pre><code class="language-json">{
+  "message": "게시가 성공적으로 취소되었습니다.",
+  "articleId": 1234567890
+}</code></pre>
+                </div>
+            </div>
+
+            <div class="info-box warning">
+                <div class="info-box-icon">!</div>
+                <div class="info-box-content">
+                    <p><strong>게시 취소 시 수행되는 작업:</strong></p>
+                    <ul>
+                        <li>PublishedArticle 및 관련 데이터 삭제 (카테고리, 기자, 관련기사, 댓글 등)</li>
+                        <li>원본 기사 상태를 <code>DRAFT</code>로 변경</li>
+                        <li>NewsSubmission 상태 업데이트 (MSN, ZUM: <code>NOT_SUBMITTED</code>, TWITTER, FACEBOOK: <code>DELETED</code>)</li>
+                        <li>트위터/페이스북 포스트 삭제 (비동기 처리)</li>
+                        <li>캐시 무효화</li>
+                    </ul>
+                    <p><strong>주의:</strong> 게시되지 않은 기사에 대해 호출하면 <code>404</code> 오류가 발생합니다.</p>
+                </div>
+            </div>
+
+            <h4>에러 응답</h4>
+            <div class="status-list">
+                <div class="status-item">
+                    <span class="status-code s4xx">400</span>
+                    <span>잘못된 기사 ID</span>
+                </div>
+                <div class="status-item">
+                    <span class="status-code s4xx">404</span>
+                    <span>기사를 찾을 수 없음 또는 게시된 기사를 찾을 수 없음</span>
+                </div>
+                <div class="status-item">
+                    <span class="status-code s5xx">500</span>
+                    <span>서버 오류</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+

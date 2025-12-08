@@ -332,6 +332,128 @@ API 키는 시스템 관리자가 `Config` 테이블에 다음 설정으로 등�
 
 ---
 
+### 7. 기사 원본 수정
+
+**엔드포인트:** `PUT /api/external/articles/{id}`
+
+**인증:** `x-api-key` 헤더 필요
+
+**설명:** 생성된 기사 원본의 내용을 수정합니다. 변경된 필드만 업데이트되며, 번역본(RegionalArticle)도 함께 업데이트됩니다.
+
+**경로 파라미터:**
+
+- `id`: 원문 기사 ID (integer)
+
+**요청 본문:**
+
+```json
+{
+  "title": "수정된 기사 제목", // 선택
+  "subTitle": "수정된 기사 부제목", // 선택
+  "articleContent": "<p>수정된 기사 내용 HTML</p>", // 선택
+  "thumbnailUrl": "https://example.com/new-image.jpg", // 선택
+  "keyword": "수정된 키워드", // 선택
+  "categoryIds": [1, 2, 3], // 선택: 카테고리 ID 목록 (전체 교체)
+  "reporterIds": [1, 2], // 선택: 기자 ID 목록 (전체 교체)
+  "relatedArticleIds": [10, 20], // 선택: 관련 기사 ID 목록 (전체 교체)
+  "grade": "IMPORTANT", // 선택: NORMAL, IMPORTANT, HEADLINE
+  "status": "REVIEW", // 선택: DRAFT, REVIEW, PUBLISHED, REJECTED, DELETED
+  "type": "ARTICLE", // 선택
+  "exposureStartTime": "2024-01-01T00:00:00.000Z", // 선택
+  "exposureEndTime": "2024-01-31T23:59:59.000Z", // 선택
+  "isMemberOnly": false, // 선택: 회원 전용 여부
+  "webhookTriggerEnabled": true, // 선택: 웹훅 트리거 활성화 여부
+  "webPushEnabled": false // 선택: 웹푸시 전송 활성화 여부
+}
+```
+
+**응답 (200 OK):**
+
+```json
+{
+  "message": "기사가 성공적으로 수정되었습니다.",
+  "article": {
+    "id": 1234567890,
+    "title": "수정된 기사 제목",
+    "subTitle": "수정된 기사 부제목",
+    "articleContent": "<p>수정된 기사 내용 HTML</p>",
+    "status": "REVIEW",
+    "categories": [
+      {
+        "category": {
+          "id": 1,
+          "name": "정치",
+          "code": "politics"
+        }
+      }
+    ],
+    "reporters": [
+      {
+        "reporter": {
+          "id": 1,
+          "name": "홍길동",
+          "email": "hong@example.com"
+        }
+      }
+    ]
+  }
+}
+```
+
+**에러 응답:**
+
+- `400`: 잘못된 기사 ID 또는 잘못된 요청
+- `404`: 기사를 찾을 수 없음
+- `500`: 서버 오류
+
+**참고:**
+
+- 요청 본문에 포함된 필드만 업데이트됩니다. 포함되지 않은 필드는 기존 값이 유지됩니다.
+- `categoryIds`, `reporterIds`, `relatedArticleIds`를 전달하면 기존 관계가 모두 삭제되고 새로운 관계로 교체됩니다.
+- 기사 수정 시 한국어 번역본(ko-kr)도 함께 업데이트됩니다.
+- 썸네일 이미지는 S3에 자동으로 복사되어 지역별 폴더에 저장됩니다.
+
+---
+
+### 8. 게시 취소
+
+**엔드포인트:** `DELETE /api/external/articles/{id}/cancel`
+
+**인증:** `x-api-key` 헤더 필요
+
+**설명:** 게시된 기사를 취소하고 원본 기사 상태를 DRAFT로 변경합니다. PublishedArticle 및 관련 데이터가 모두 삭제되며, 소셜 미디어 포스트(트위터, 페이스북)도 함께 삭제됩니다.
+
+**경로 파라미터:**
+
+- `id`: 원문 기사 ID (integer)
+
+**응답 (200 OK):**
+
+```json
+{
+  "message": "게시가 성공적으로 취소되었습니다.",
+  "articleId": 1234567890
+}
+```
+
+**에러 응답:**
+
+- `400`: 잘못된 기사 ID
+- `404`: 기사를 찾을 수 없음 또는 게시된 기사를 찾을 수 없음
+- `500`: 서버 오류
+
+**참고:**
+
+- 게시 취소 시 다음 작업이 수행됩니다:
+  - PublishedArticle 및 관련 데이터 삭제 (카테고리, 기자, 관련기사, 댓글 등)
+  - 원본 기사 상태를 `DRAFT`로 변경
+  - NewsSubmission 상태 업데이트 (MSN, ZUM: `NOT_SUBMITTED`, TWITTER, FACEBOOK: `DELETED`)
+  - 트위터/페이스북 포스트 삭제 (비동기 처리)
+  - 캐시 무효화
+- 게시되지 않은 기사에 대해 호출하면 `404` 오류가 발생합니다.
+
+---
+
 ## 전체 플로우 예시
 
 ### 0단계: 사용자 및 카테고리 조회 (선택)
@@ -476,6 +598,54 @@ curl -X POST https://api.example.com/api/external/articles/1234567890/approve \
 }
 ```
 
+### 5단계: 기사 원본 수정 (선택)
+
+게시 전 또는 게시 후에도 기사 원본을 수정할 수 있습니다:
+
+```bash
+# articleId를 사용 (예: 1234567890)
+curl -X PUT https://api.example.com/api/external/articles/1234567890 \
+  -H "Content-Type: application/json" \
+  -H "x-api-key: YOUR_API_KEY" \
+  -d '{
+    "title": "수정된 기사 제목",
+    "articleContent": "<p>수정된 기사 내용</p>",
+    "categoryIds": [1, 2]
+  }'
+```
+
+**응답:**
+
+```json
+{
+  "message": "기사가 성공적으로 수정되었습니다.",
+  "article": {
+    "id": 1234567890,
+    "title": "수정된 기사 제목",
+    "status": "DRAFT"
+  }
+}
+```
+
+### 6단계: 게시 취소 (선택)
+
+게시된 기사를 취소하고 원본 상태로 되돌릴 수 있습니다:
+
+```bash
+# articleId를 사용 (예: 1234567890)
+curl -X DELETE https://api.example.com/api/external/articles/1234567890/cancel \
+  -H "x-api-key: YOUR_API_KEY"
+```
+
+**응답:**
+
+```json
+{
+  "message": "게시가 성공적으로 취소되었습니다.",
+  "articleId": 1234567890
+}
+```
+
 ---
 
 ## 주의사항
@@ -494,6 +664,10 @@ curl -X POST https://api.example.com/api/external/articles/1234567890/approve \
 
 7. **id 사용**: 기사 생성 후 반환되는 `id`는 `externalId`와 동일한 값입니다. 이후 번역 요청, 번역 상태 조회, 승인 등 모든 API 호출에서 이 `id`를 경로 파라미터로 사용하세요.
 
+8. **기사 수정**: 기사 수정 시 변경된 필드만 업데이트되며, 포함되지 않은 필드는 기존 값이 유지됩니다. `categoryIds`, `reporterIds`, `relatedArticleIds`를 전달하면 기존 관계가 모두 삭제되고 새로운 관계로 교체됩니다.
+
+9. **게시 취소**: 게시 취소 시 PublishedArticle 및 관련 데이터가 모두 삭제되며, 원본 기사 상태가 `DRAFT`로 변경됩니다. 소셜 미디어 포스트도 함께 삭제됩니다.
+
 ---
 
 ## 에러 처리
@@ -504,6 +678,7 @@ curl -X POST https://api.example.com/api/external/articles/1234567890/approve \
 - `201`: 생성 성공
 - `202`: 요청 접수 (비동기 처리)
 - `400`: 잘못된 요청
+- `401`: 인증 실패
 - `404`: 리소스를 찾을 수 없음
 - `409`: 리소스 충돌 (중복)
 - `500`: 서버 오류
