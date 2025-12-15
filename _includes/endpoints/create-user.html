@@ -1,0 +1,207 @@
+<section id="create-user">
+    <div class="endpoint-card">
+        <div class="endpoint-header">
+            <span class="method-badge post">POST</span>
+            <span class="endpoint-path">/api/external/users</span>
+        </div>
+        <div class="endpoint-body">
+            <div class="endpoint-desc">
+                <p>id를 지정하여 사용자(기자)를 생성합니다.</p>
+            </div>
+
+            <div class="param-section">
+                <div class="param-title">요청 파라미터</div>
+                <table class="param-table">
+                    <thead>
+                        <tr>
+                            <th>필드</th>
+                            <th>타입</th>
+                            <th>필수</th>
+                            <th>설명</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="param-name">id</span></td>
+                            <td><span class="param-type">integer</span></td>
+                            <td><span class="param-required required">필수</span></td>
+                            <td>사용자 ID (지정 필수)</td>
+                        </tr>
+                        <tr>
+                            <td><span class="param-name">loginId</span></td>
+                            <td><span class="param-type">string</span></td>
+                            <td><span class="param-required required">필수</span></td>
+                            <td>로그인 ID</td>
+                        </tr>
+                        <tr>
+                            <td><span class="param-name">password</span></td>
+                            <td><span class="param-type">string</span></td>
+                            <td><span class="param-required required">필수</span></td>
+                            <td>비밀번호</td>
+                        </tr>
+                        <tr>
+                            <td><span class="param-name">email</span></td>
+                            <td><span class="param-type">string</span></td>
+                            <td><span class="param-required required">필수</span></td>
+                            <td>이메일 주소</td>
+                        </tr>
+                        <tr>
+                            <td><span class="param-name">name</span></td>
+                            <td><span class="param-type">string</span></td>
+                            <td><span class="param-required required">필수</span></td>
+                            <td>이름</td>
+                        </tr>
+                        <tr>
+                            <td><span class="param-name">phoneNumber</span></td>
+                            <td><span class="param-type">string</span></td>
+                            <td><span class="param-required optional">선택</span></td>
+                            <td>전화번호</td>
+                        </tr>
+                        <tr>
+                            <td><span class="param-name">address</span></td>
+                            <td><span class="param-type">string</span></td>
+                            <td><span class="param-required optional">선택</span></td>
+                            <td>주소</td>
+                        </tr>
+                        <tr>
+                            <td><span class="param-name">userType</span></td>
+                            <td><span class="param-type">string</span></td>
+                            <td><span class="param-required optional">선택</span></td>
+                            <td>사용자 타입 (USER, REPORTER, 기본값: REPORTER)</td>
+                        </tr>
+                        <tr>
+                            <td><span class="param-name">status</span></td>
+                            <td><span class="param-type">string</span></td>
+                            <td><span class="param-required optional">선택</span></td>
+                            <td>상태 (ACTIVE, INACTIVE, DORMANT, 기본값: INACTIVE)</td>
+                        </tr>
+                        <tr>
+                            <td><span class="param-name">userGradeId</span></td>
+                            <td><span class="param-type">integer</span></td>
+                            <td><span class="param-required optional">선택</span></td>
+                            <td>사용자 등급 ID</td>
+                        </tr>
+                        <tr>
+                            <td><span class="param-name">departmentId</span></td>
+                            <td><span class="param-type">integer</span></td>
+                            <td><span class="param-required optional">선택</span></td>
+                            <td>부서 ID</td>
+                        </tr>
+                        <tr>
+                            <td><span class="param-name">authorDisplayId</span></td>
+                            <td><span class="param-type">integer</span></td>
+                            <td><span class="param-required optional">선택</span></td>
+                            <td>저자 표시명 ID</td>
+                        </tr>
+                        <tr>
+                            <td><span class="param-name">profileImage</span></td>
+                            <td><span class="param-type">string</span></td>
+                            <td><span class="param-required optional">선택</span></td>
+                            <td>프로필 이미지 URL</td>
+                        </tr>
+                        <tr>
+                            <td><span class="param-name">profileDescription</span></td>
+                            <td><span class="param-type">string</span></td>
+                            <td><span class="param-required optional">선택</span></td>
+                            <td>프로필 설명</td>
+                        </tr>
+                        <tr>
+                            <td><span class="param-name">isSubscribed</span></td>
+                            <td><span class="param-type">boolean</span></td>
+                            <td><span class="param-required optional">선택</span></td>
+                            <td>구독 여부 (기본값: false)</td>
+                        </tr>
+                        <tr>
+                            <td><span class="param-name">isNotificationEnabled</span></td>
+                            <td><span class="param-type">boolean</span></td>
+                            <td><span class="param-required optional">선택</span></td>
+                            <td>알림 활성화 여부 (기본값: false)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-label">요청 예시</span>
+                    <button class="copy-btn" onclick="copyCode(this)">
+                        <span>📋</span> 복사
+                    </button>
+                </div>
+                <pre><code class="language-json">{
+  "id": 100,
+  "loginId": "hong",
+  "password": "password123",
+  "email": "hong@example.com",
+  "name": "홍길동",
+  "phoneNumber": "010-1234-5678",
+  "address": "서울시 강남구",
+  "userType": "REPORTER",
+  "status": "INACTIVE",
+  "userGradeId": 1,
+  "departmentId": 1,
+  "authorDisplayId": 1,
+  "profileImage": "https://example.com/profile.jpg",
+  "profileDescription": "기자 프로필",
+  "isSubscribed": false,
+  "isNotificationEnabled": false
+}</code></pre>
+            </div>
+
+            <div class="response-section">
+                <div class="response-status success">✓ 201 Created</div>
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="code-label">응답</span>
+                        <button class="copy-btn" onclick="copyCode(this)">
+                            <span>📋</span> 복사
+                        </button>
+                    </div>
+                    <pre><code class="language-json">{
+  "id": 100,
+  "loginId": "hong",
+  "email": "hong@example.com",
+  "name": "홍길동",
+  "phoneNumber": "010-1234-5678",
+  "userType": "REPORTER",
+  "userGradeId": 1,
+  "gradeName": "기자",
+  "departmentId": 1,
+  "departmentName": "사회부",
+  "authorDisplayId": 1,
+  "authorDisplayName": "홍길동 기자",
+  "profileImage": "https://example.com/profile.jpg",
+  "profileDescription": "기자 프로필",
+  "status": "INACTIVE",
+  "createdAt": "2024-01-01T00:00:00.000Z"
+}</code></pre>
+                </div>
+            </div>
+
+            <div class="info-box warning">
+                <div class="info-box-icon">!</div>
+                <div class="info-box-content">
+                    <p><strong>중요:</strong> <code>id</code>는 필수이며, 지정한 값이 그대로 사용자 ID로 사용됩니다. 이미 존재하는 <code>id</code>, <code>loginId</code>, 또는 <code>email</code>로 생성 시 <code>400</code> 오류가 발생합니다.</p>
+                    <p><code>userGradeId</code>가 지정되지 않은 경우, 시스템의 기본 사용자 등급이 자동으로 할당됩니다.</p>
+                </div>
+            </div>
+
+            <h4>에러 응답</h4>
+            <div class="status-list">
+                <div class="status-item">
+                    <span class="status-code s4xx">400</span>
+                    <span>필수 필드 누락, 이미 존재하는 사용자 ID/아이디/이메일, 또는 외래 키 제약 조건 위반</span>
+                </div>
+                <div class="status-item">
+                    <span class="status-code s4xx">401</span>
+                    <span>인증 실패</span>
+                </div>
+                <div class="status-item">
+                    <span class="status-code s5xx">500</span>
+                    <span>서버 오류</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+

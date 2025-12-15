@@ -1,0 +1,156 @@
+<section id="update-translation">
+    <div class="endpoint-card">
+        <div class="endpoint-header">
+            <span class="method-badge put">PUT</span>
+            <span class="endpoint-path">/api/external/articles/{id}/translations/{region}</span>
+        </div>
+        <div class="endpoint-body">
+            <div class="endpoint-desc">
+                <p>특정 지역의 번역본을 수정합니다. title과 subTitle의 HTML 엔티티는 자동으로 실제 문자로 변환됩니다.</p>
+            </div>
+
+            <div class="param-section">
+                <div class="param-title">경로 파라미터</div>
+                <table class="param-table">
+                    <thead>
+                        <tr>
+                            <th>필드</th>
+                            <th>타입</th>
+                            <th>설명</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="param-name">id</span></td>
+                            <td><span class="param-type">integer</span></td>
+                            <td>원문 기사 ID</td>
+                        </tr>
+                        <tr>
+                            <td><span class="param-name">region</span></td>
+                            <td><span class="param-type">string</span></td>
+                            <td>지역 코드 (예: en-us, ja-jp)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="param-section">
+                <div class="param-title">요청 파라미터</div>
+                <table class="param-table">
+                    <thead>
+                        <tr>
+                            <th>필드</th>
+                            <th>타입</th>
+                            <th>필수</th>
+                            <th>설명</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="param-name">title</span></td>
+                            <td><span class="param-type">string</span></td>
+                            <td><span class="param-required required">필수</span></td>
+                            <td>번역 제목</td>
+                        </tr>
+                        <tr>
+                            <td><span class="param-name">subTitle</span></td>
+                            <td><span class="param-type">string</span></td>
+                            <td><span class="param-required optional">선택</span></td>
+                            <td>번역 부제목</td>
+                        </tr>
+                        <tr>
+                            <td><span class="param-name">articleContent</span></td>
+                            <td><span class="param-type">string</span></td>
+                            <td><span class="param-required required">필수</span></td>
+                            <td>번역 내용 (HTML 지원)</td>
+                        </tr>
+                        <tr>
+                            <td><span class="param-name">thumbnailUrl</span></td>
+                            <td><span class="param-type">string</span></td>
+                            <td><span class="param-required optional">선택</span></td>
+                            <td>썸네일 이미지 URL</td>
+                        </tr>
+                        <tr>
+                            <td><span class="param-name">keyword</span></td>
+                            <td><span class="param-type">string</span></td>
+                            <td><span class="param-required optional">선택</span></td>
+                            <td>키워드</td>
+                        </tr>
+                        <tr>
+                            <td><span class="param-name">status</span></td>
+                            <td><span class="param-type">string</span></td>
+                            <td><span class="param-required optional">선택</span></td>
+                            <td>번역 상태 (SUCCESS, FAILED, PROGRESS, 기본값: SUCCESS)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-label">요청 예시</span>
+                    <button class="copy-btn" onclick="copyCode(this)">
+                        <span>📋</span> 복사
+                    </button>
+                </div>
+                <pre><code class="language-json">{
+  "title": "수정된 번역 제목",
+  "subTitle": "수정된 번역 부제목",
+  "articleContent": "&lt;p&gt;수정된 번역 내용 HTML&lt;/p&gt;",
+  "thumbnailUrl": "https://example.com/new-image.jpg",
+  "keyword": "수정된 키워드",
+  "status": "SUCCESS"
+}</code></pre>
+            </div>
+
+            <div class="response-section">
+                <div class="response-status success">✓ 200 OK</div>
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="code-label">응답</span>
+                        <button class="copy-btn" onclick="copyCode(this)">
+                            <span>📋</span> 복사
+                        </button>
+                    </div>
+                    <pre><code class="language-json">{
+  "id": 101,
+  "title": "수정된 번역 제목",
+  "subTitle": "수정된 번역 부제목",
+  "region": "en-us",
+  "status": "SUCCESS",
+  "updatedAt": "2024-01-01T12:00:00.000Z"
+}</code></pre>
+                </div>
+            </div>
+
+            <div class="info-box tip">
+                <div class="info-box-icon">TIP</div>
+                <div class="info-box-content">
+                    <p>요청 본문에 포함된 필드만 업데이트됩니다. 포함되지 않은 필드는 기존 값이 유지됩니다.</p>
+                    <p>본문 내 연관기사 블록의 기사 ID는 자동으로 번역된 기사 ID로 매핑됩니다. 썸네일 관련 필드(<code>thumbnailUrl_1_1</code>, <code>thumbnailUrl_3_2</code> 등)도 업데이트 가능합니다.</p>
+                </div>
+            </div>
+
+            <h4>에러 응답</h4>
+            <div class="status-list">
+                <div class="status-item">
+                    <span class="status-code s4xx">400</span>
+                    <span>필수 필드 누락 또는 잘못된 요청</span>
+                </div>
+                <div class="status-item">
+                    <span class="status-code s4xx">401</span>
+                    <span>인증 실패</span>
+                </div>
+                <div class="status-item">
+                    <span class="status-code s4xx">404</span>
+                    <span>기사 또는 번역본을 찾을 수 없음</span>
+                </div>
+                <div class="status-item">
+                    <span class="status-code s5xx">500</span>
+                    <span>서버 오류</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
