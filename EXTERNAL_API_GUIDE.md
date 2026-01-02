@@ -146,7 +146,178 @@ API 키는 시스템 관리자가 `Config` 테이블에 다음 설정으로 등�
 
 ---
 
-### 3. 원문 기사 생성
+### 3. 사용자(기자) 생성
+
+**엔드포인트:** `POST /api/external/users`
+
+**인증:** `x-api-key` 헤더 필요
+
+**설명:** id를 지정하여 사용자(기자)를 생성합니다.
+
+**요청 본문:**
+
+```json
+{
+  "id": 100, // 필수: 사용자 ID (지정 필수)
+  "loginId": "hong", // 필수
+  "password": "password123", // 필수
+  "email": "hong@example.com", // 필수
+  "name": "홍길동", // 필수
+  "phoneNumber": "010-1234-5678", // 선택
+  "address": "서울시 강남구", // 선택
+  "userType": "REPORTER", // 선택: USER, REPORTER (기본값: REPORTER)
+  "status": "INACTIVE", // 선택: ACTIVE, INACTIVE, DORMANT (기본값: INACTIVE)
+  "userGradeId": 1, // 선택: 사용자 등급 ID
+  "departmentId": 1, // 선택: 부서 ID
+  "authorDisplayId": 1, // 선택: 저자 표시명 ID
+  "profileImage": "https://example.com/profile.jpg", // 선택
+  "profileDescription": "기자 프로필", // 선택
+  "isSubscribed": false, // 선택: 구독 여부 (기본값: false)
+  "isNotificationEnabled": false // 선택: 알림 활성화 여부 (기본값: false)
+}
+```
+
+**응답 (201 Created):**
+
+```json
+{
+  "id": 100,
+  "loginId": "hong",
+  "email": "hong@example.com",
+  "name": "홍길동",
+  "phoneNumber": "010-1234-5678",
+  "userType": "REPORTER",
+  "userGradeId": 1,
+  "gradeName": "기자",
+  "departmentId": 1,
+  "departmentName": "사회부",
+  "authorDisplayId": 1,
+  "authorDisplayName": "홍길동 기자",
+  "profileImage": "https://example.com/profile.jpg",
+  "profileDescription": "기자 프로필",
+  "status": "INACTIVE",
+  "createdAt": "2024-01-01T00:00:00.000Z"
+}
+```
+
+**에러 응답:**
+
+- `400`: 필수 필드 누락, 이미 존재하는 사용자 ID/아이디/이메일, 또는 외래 키 제약 조건 위반
+- `401`: 인증 실패
+- `500`: 서버 오류
+
+**참고:**
+
+- `id`는 필수이며, 지정한 값이 그대로 사용자 ID로 사용됩니다.
+- 이미 존재하는 `id`, `loginId`, 또는 `email`로 생성 시 `400` 오류가 발생합니다.
+- `userGradeId`가 지정되지 않은 경우, 시스템의 기본 사용자 등급이 자동으로 할당됩니다.
+
+---
+
+### 4. 삭제된 사용자 복구
+
+**엔드포인트:** `POST /api/external/users/{id}/restore`
+
+**인증:** `x-api-key` 헤더 필요
+
+**설명:** 삭제된 사용자를 UserHistory에서 정보를 복구하여 복원합니다. 삭제 시 저장된 원본 정보를 기반으로 사용자 정보를 복구합니다.
+
+**경로 파라미터:**
+
+- `id`: 사용자 ID (integer)
+
+**응답 (200 OK):**
+
+```json
+{
+  "id": 100,
+  "loginId": "hong",
+  "email": "hong@example.com",
+  "name": "홍길동",
+  "phoneNumber": "010-1234-5678",
+  "userType": "REPORTER",
+  "userGradeId": 1,
+  "gradeName": "기자",
+  "departmentId": 1,
+  "departmentName": "사회부",
+  "authorDisplayId": 1,
+  "authorDisplayName": "홍길동 기자",
+  "profileImage": "https://example.com/profile.jpg",
+  "profileDescription": "기자 프로필",
+  "status": "INACTIVE",
+  "createdAt": "2024-01-01T00:00:00.000Z"
+}
+```
+
+**에러 응답:**
+
+- `400`: 유효하지 않은 사용자 ID, 이미 복구된 사용자, 삭제 이력 형식 오류, 또는 복구하려는 loginId/email이 이미 사용 중
+- `401`: 인증 실패
+- `404`: 사용자를 찾을 수 없음 또는 삭제 이력을 찾을 수 없음
+- `500`: 서버 오류
+
+**참고:**
+
+- 삭제된 사용자만 복구할 수 있습니다. `loginId`가 `deleted_user_`로 시작하는 사용자만 복구 가능합니다.
+- UserHistory에 DELETE 타입의 이력이 있어야 복구할 수 있습니다.
+- 복구 시 원본 정보(loginId, email, name, phoneNumber, address, status, profileImage, profileDescription, departmentId, userGradeId, authorDisplayId 등)가 복구됩니다.
+- **password는 복구할 수 없습니다.** 복구 후 비밀번호를 재설정해야 합니다.
+- 복구하려는 `loginId` 또는 `email`이 이미 다른 사용자에게 사용 중이면 복구가 실패합니다.
+- 복구 작업은 UserHistory에 UPDATE 타입으로 기록됩니다.
+
+---
+
+### 5. 카테고리 생성
+
+**엔드포인트:** `POST /api/external/categories`
+
+**인증:** `x-api-key` 헤더 필요
+
+**설명:** id와 code를 지정하여 카테고리를 생성합니다.
+
+**요청 본문:**
+
+```json
+{
+  "id": 100, // 필수: 카테고리 ID (지정 필수)
+  "name": "정치", // 필수: 카테고리 이름
+  "code": "politics", // 필수: 카테고리 코드 (지정 필수)
+  "parentCategoryId": null, // 선택: 상위 카테고리 ID
+  "regionCode": "ko-KO" // 선택: 지역 코드 (기본값: ko-KO)
+}
+```
+
+**응답 (201 Created):**
+
+```json
+{
+  "id": 100,
+  "name": "정치",
+  "code": "politics",
+  "regionCode": "ko-KO",
+  "parentCategoryId": null,
+  "sortOrder": 1,
+  "rssEnabled": true,
+  "childCategories": []
+}
+```
+
+**에러 응답:**
+
+- `400`: 필수 필드 누락, 이미 존재하는 카테고리 ID/코드/이름, 또는 상위 카테고리가 존재하지 않음
+- `401`: 인증 실패
+- `500`: 서버 오류
+
+**참고:**
+
+- `id`와 `code`는 필수이며, 지정한 값이 그대로 사용됩니다.
+- 이미 존재하는 `id` 또는 `code`로 생성 시 `400` 오류가 발생합니다.
+- `parentCategoryId`가 지정된 경우, 해당 상위 카테고리가 존재해야 합니다.
+- 동일한 이름의 카테고리가 같은 상위 카테고리 하위에 이미 존재하면 `400` 오류가 발생합니다.
+
+---
+
+### 6. 원문 기사 생성
 
 **엔드포인트:** `POST /api/external/articles`
 
@@ -195,7 +366,7 @@ API 키는 시스템 관리자가 `Config` 테이블에 다음 설정으로 등�
 
 ---
 
-### 4. 번역 요청
+### 7. 번역 요청
 
 **엔드포인트:** `POST /api/external/articles/{id}/translate`
 
@@ -239,7 +410,7 @@ API 키는 시스템 관리자가 `Config` 테이블에 다음 설정으로 등�
 
 ---
 
-### 5. 번역 상태 및 결과 조회
+### 8. 번역 상태 및 결과 조회
 
 **엔드포인트:** `GET /api/external/articles/{id}/translations`
 
@@ -289,7 +460,98 @@ API 키는 시스템 관리자가 `Config` 테이블에 다음 설정으로 등�
 
 ---
 
-### 6. 기사 승인 처리
+### 9. 번역본 수정
+
+**엔드포인트:** `PUT /api/external/articles/{id}/translations/{region}`
+
+**인증:** `x-api-key` 헤더 필요
+
+**설명:** 특정 지역의 번역본을 수정합니다. title과 subTitle의 HTML 엔티티는 자동으로 실제 문자로 변환됩니다.
+
+**경로 파라미터:**
+
+- `id`: 원문 기사 ID (integer)
+- `region`: 지역 코드 (예: `en-us`, `ja-jp`)
+
+**요청 본문:**
+
+```json
+{
+  "title": "수정된 번역 제목", // 필수
+  "subTitle": "수정된 번역 부제목", // 선택
+  "articleContent": "<p>수정된 번역 내용 HTML</p>", // 필수
+  "thumbnailUrl": "https://example.com/new-image.jpg", // 선택
+  "keyword": "수정된 키워드", // 선택
+  "status": "SUCCESS" // 선택: SUCCESS, FAILED, PROGRESS (기본값: SUCCESS)
+}
+```
+
+**응답 (200 OK):**
+
+```json
+{
+  "id": 101,
+  "title": "수정된 번역 제목",
+  "subTitle": "수정된 번역 부제목",
+  "region": "en-us",
+  "status": "SUCCESS",
+  "updatedAt": "2024-01-01T12:00:00.000Z"
+}
+```
+
+**에러 응답:**
+
+- `400`: 필수 필드 누락 또는 잘못된 요청
+- `404`: 기사 또는 번역본을 찾을 수 없음
+- `401`: 인증 실패
+- `500`: 서버 오류
+
+**참고:**
+
+- 요청 본문에 포함된 필드만 업데이트됩니다. 포함되지 않은 필드는 기존 값이 유지됩니다.
+- 본문 내 연관기사 블록의 기사 ID는 자동으로 번역된 기사 ID로 매핑됩니다.
+- 썸네일 관련 필드(`thumbnailUrl_1_1`, `thumbnailUrl_3_2` 등)도 업데이트 가능합니다.
+
+---
+
+### 10. 번역본 삭제
+
+**엔드포인트:** `DELETE /api/external/articles/{id}/translations/{region}`
+
+**인증:** `x-api-key` 헤더 필요
+
+**설명:** 특정 지역의 번역본을 삭제합니다.
+
+**경로 파라미터:**
+
+- `id`: 원문 기사 ID (integer)
+- `region`: 지역 코드 (예: `en-us`, `ja-jp`)
+
+**응답 (200 OK):**
+
+```json
+{
+  "message": "번역본이 성공적으로 삭제되었습니다.",
+  "articleId": 1234567890,
+  "region": "en-us"
+}
+```
+
+**에러 응답:**
+
+- `400`: 잘못된 기사 ID
+- `404`: 기사 또는 번역본을 찾을 수 없음
+- `401`: 인증 실패
+- `500`: 서버 오류
+
+**참고:**
+
+- 번역본 삭제 시 원본 기사는 영향받지 않습니다.
+- 삭제된 번역본은 복구할 수 없으므로 주의하세요.
+
+---
+
+### 11. 기사 승인 처리
 
 **엔드포인트:** `POST /api/external/articles/{id}/approve`
 
@@ -332,7 +594,7 @@ API 키는 시스템 관리자가 `Config` 테이블에 다음 설정으로 등�
 
 ---
 
-### 7. 기사 원본 수정
+### 12. 기사 원본 수정
 
 **엔드포인트:** `PUT /api/external/articles/{id}`
 
@@ -415,7 +677,7 @@ API 키는 시스템 관리자가 `Config` 테이블에 다음 설정으로 등�
 
 ---
 
-### 8. 게시 취소
+### 13. 게시 취소
 
 **엔드포인트:** `DELETE /api/external/articles/{id}/cancel`
 
@@ -456,19 +718,77 @@ API 키는 시스템 관리자가 `Config` 테이블에 다음 설정으로 등�
 
 ## 전체 플로우 예시
 
-### 0단계: 사용자 및 카테고리 조회 (선택)
+### 0단계: 사용자 및 카테고리 조회/생성 (선택)
 
-기사 생성 전에 사용 가능한 기자와 카테고리를 조회할 수 있습니다:
+기사 생성 전에 사용 가능한 기자와 카테고리를 조회하거나 생성할 수 있습니다:
 
 ```bash
 # 사용자(기자) 목록 조회
 curl "https://api.example.com/api/external/users?page=1&limit=10&status=ACTIVE" \
   -H "x-api-key: YOUR_API_KEY"
 
+# 사용자(기자) 생성
+curl -X POST https://api.example.com/api/external/users \
+  -H "Content-Type: application/json" \
+  -H "x-api-key: YOUR_API_KEY" \
+  -d '{
+    "id": 100,
+    "loginId": "hong",
+    "password": "password123",
+    "email": "hong@example.com",
+    "name": "홍길동",
+    "userType": "REPORTER",
+    "status": "ACTIVE"
+  }'
+
 # 카테고리 목록 조회
 curl "https://api.example.com/api/external/categories" \
   -H "x-api-key: YOUR_API_KEY"
+
+# 카테고리 생성
+curl -X POST https://api.example.com/api/external/categories \
+  -H "Content-Type: application/json" \
+  -H "x-api-key: YOUR_API_KEY" \
+  -d '{
+    "id": 100,
+    "name": "정치",
+    "code": "politics",
+    "regionCode": "ko-KO"
+  }'
+
+# 삭제된 사용자 복구
+curl -X POST https://api.example.com/api/external/users/100/restore \
+  -H "x-api-key: YOUR_API_KEY"
 ```
+
+**응답 (사용자 복구 성공):**
+
+```json
+{
+  "id": 100,
+  "loginId": "hong",
+  "email": "hong@example.com",
+  "name": "홍길동",
+  "phoneNumber": "010-1234-5678",
+  "userType": "REPORTER",
+  "userGradeId": 1,
+  "gradeName": "기자",
+  "departmentId": 1,
+  "departmentName": "사회부",
+  "authorDisplayId": 1,
+  "authorDisplayName": "홍길동 기자",
+  "profileImage": "https://example.com/profile.jpg",
+  "profileDescription": "기자 프로필",
+  "status": "INACTIVE",
+  "createdAt": "2024-01-01T00:00:00.000Z"
+}
+```
+
+**참고:**
+
+- 삭제된 사용자(`loginId`가 `deleted_user_`로 시작)만 복구할 수 있습니다.
+- 복구 후 비밀번호는 재설정해야 합니다.
+- 복구하려는 `loginId` 또는 `email`이 이미 다른 사용자에게 사용 중이면 복구가 실패합니다.
 
 ### 1단계: 원문 기사 생성
 
@@ -667,6 +987,8 @@ curl -X DELETE https://api.example.com/api/external/articles/1234567890/cancel \
 8. **기사 수정**: 기사 수정 시 변경된 필드만 업데이트되며, 포함되지 않은 필드는 기존 값이 유지됩니다. `categoryIds`, `reporterIds`, `relatedArticleIds`를 전달하면 기존 관계가 모두 삭제되고 새로운 관계로 교체됩니다.
 
 9. **게시 취소**: 게시 취소 시 PublishedArticle 및 관련 데이터가 모두 삭제되며, 원본 기사 상태가 `DRAFT`로 변경됩니다. 소셜 미디어 포스트도 함께 삭제됩니다.
+
+10. **사용자 복구**: 삭제된 사용자는 UserHistory의 DELETE 이력을 기반으로 복구할 수 있습니다. `loginId`가 `deleted_user_`로 시작하는 사용자만 복구 가능하며, 복구 시 원본 정보가 복구되지만 비밀번호는 복구되지 않으므로 재설정이 필요합니다. 복구하려는 `loginId` 또는 `email`이 이미 다른 사용자에게 사용 중이면 복구가 실패합니다.
 
 ---
 
