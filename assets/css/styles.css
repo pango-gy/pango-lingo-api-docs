@@ -218,6 +218,9 @@ code {
 
 .nav-method.get { background: var(--color-success-light); color: var(--color-success); }
 .nav-method.post { background: var(--color-primary-light); color: var(--color-primary); }
+.nav-method.put { background: var(--color-warning-light); color: var(--color-warning); }
+.nav-method.patch { background: var(--color-warning-light); color: var(--color-warning); }
+.nav-method.delete { background: var(--color-error-light); color: var(--color-error); }
 
 /* ----------------------------------------
    Main Content
@@ -349,6 +352,9 @@ p {
 
 .method-badge.post { background: var(--color-primary); color: white; }
 .method-badge.get { background: var(--color-success); color: white; }
+.method-badge.put { background: var(--color-warning); color: white; }
+.method-badge.patch { background: var(--color-warning); color: white; }
+.method-badge.delete { background: var(--color-error); color: white; }
 
 .endpoint-path {
     font-family: var(--font-mono);

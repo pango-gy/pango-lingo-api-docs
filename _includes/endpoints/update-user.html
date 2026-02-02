@@ -1,0 +1,208 @@
+<section id="update-user">
+    <div class="endpoint-card">
+        <div class="endpoint-header">
+            <span class="method-badge patch">PATCH</span>
+            <span class="endpoint-path">/api/external/users/{id}</span>
+        </div>
+        <div class="endpoint-body">
+            <div class="endpoint-desc">
+                <p>특정 사용자(기자)의 정보를 수정합니다. 요청 본문에 포함된 필드만 업데이트되며, 포함되지 않은 필드는 기존 값이 유지됩니다.</p>
+            </div>
+
+            <div class="param-section">
+                <div class="param-title">경로 파라미터</div>
+                <table class="param-table">
+                    <thead>
+                        <tr>
+                            <th>필드</th>
+                            <th>타입</th>
+                            <th>필수</th>
+                            <th>설명</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="param-name">id</span></td>
+                            <td><span class="param-type">integer</span></td>
+                            <td><span class="param-required required">필수</span></td>
+                            <td>사용자 ID</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="param-section">
+                <div class="param-title">요청 파라미터</div>
+                <table class="param-table">
+                    <thead>
+                        <tr>
+                            <th>필드</th>
+                            <th>타입</th>
+                            <th>필수</th>
+                            <th>설명</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="param-name">email</span></td>
+                            <td><span class="param-type">string</span></td>
+                            <td><span class="param-required optional">선택</span></td>
+                            <td>이메일 주소</td>
+                        </tr>
+                        <tr>
+                            <td><span class="param-name">name</span></td>
+                            <td><span class="param-type">string</span></td>
+                            <td><span class="param-required optional">선택</span></td>
+                            <td>사용자 이름</td>
+                        </tr>
+                        <tr>
+                            <td><span class="param-name">phoneNumber</span></td>
+                            <td><span class="param-type">string</span></td>
+                            <td><span class="param-required optional">선택</span></td>
+                            <td>전화번호</td>
+                        </tr>
+                        <tr>
+                            <td><span class="param-name">address</span></td>
+                            <td><span class="param-type">string</span></td>
+                            <td><span class="param-required optional">선택</span></td>
+                            <td>주소</td>
+                        </tr>
+                        <tr>
+                            <td><span class="param-name">userGradeId</span></td>
+                            <td><span class="param-type">integer</span></td>
+                            <td><span class="param-required optional">선택</span></td>
+                            <td>사용자 등급 ID (null 가능)</td>
+                        </tr>
+                        <tr>
+                            <td><span class="param-name">departmentId</span></td>
+                            <td><span class="param-type">integer</span></td>
+                            <td><span class="param-required optional">선택</span></td>
+                            <td>부서 ID (null 가능)</td>
+                        </tr>
+                        <tr>
+                            <td><span class="param-name">authorDisplayId</span></td>
+                            <td><span class="param-type">integer</span></td>
+                            <td><span class="param-required optional">선택</span></td>
+                            <td>저자 표시명 ID (null 가능)</td>
+                        </tr>
+                        <tr>
+                            <td><span class="param-name">status</span></td>
+                            <td><span class="param-type">string</span></td>
+                            <td><span class="param-required optional">선택</span></td>
+                            <td>계정 상태 (ACTIVE, INACTIVE, DORMANT)</td>
+                        </tr>
+                        <tr>
+                            <td><span class="param-name">profileImage</span></td>
+                            <td><span class="param-type">string</span></td>
+                            <td><span class="param-required optional">선택</span></td>
+                            <td>프로필 이미지 URL</td>
+                        </tr>
+                        <tr>
+                            <td><span class="param-name">profileDescription</span></td>
+                            <td><span class="param-type">string</span></td>
+                            <td><span class="param-required optional">선택</span></td>
+                            <td>프로필 설명</td>
+                        </tr>
+                        <tr>
+                            <td><span class="param-name">isSubscribed</span></td>
+                            <td><span class="param-type">boolean</span></td>
+                            <td><span class="param-required optional">선택</span></td>
+                            <td>구독 여부</td>
+                        </tr>
+                        <tr>
+                            <td><span class="param-name">isNotificationEnabled</span></td>
+                            <td><span class="param-type">boolean</span></td>
+                            <td><span class="param-required optional">선택</span></td>
+                            <td>알림 활성화 여부</td>
+                        </tr>
+                        <tr>
+                            <td><span class="param-name">password</span></td>
+                            <td><span class="param-type">string</span></td>
+                            <td><span class="param-required optional">선택</span></td>
+                            <td>새 비밀번호 (최소 8자 이상)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-label">요청 예시</span>
+                    <button class="copy-btn" onclick="copyCode(this)">
+                        <span>📋</span> 복사
+                    </button>
+                </div>
+                <pre><code class="language-json">{
+  "name": "홍길동 (수정됨)",
+  "profileDescription": "업데이트된 프로필 설명"
+}</code></pre>
+            </div>
+
+            <div class="response-section">
+                <div class="response-status success">✓ 200 OK</div>
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="code-label">응답</span>
+                        <button class="copy-btn" onclick="copyCode(this)">
+                            <span>📋</span> 복사
+                        </button>
+                    </div>
+                    <pre><code class="language-json">{
+  "id": 1,
+  "loginId": "hong",
+  "email": "hong@example.com",
+  "name": "홍길동",
+  "phoneNumber": "010-1234-5678",
+  "address": "서울시 강남구",
+  "userType": "REPORTER",
+  "userGradeId": 1,
+  "gradeName": "기자",
+  "departmentId": 1,
+  "departmentName": "사회부",
+  "authorDisplayId": 1,
+  "authorDisplayName": "홍길동 기자",
+  "profileImage": "https://example.com/profile.jpg",
+  "profileDescription": "기자 프로필 설명",
+  "isSubscribed": true,
+  "isNotificationEnabled": true,
+  "status": "ACTIVE",
+  "createdAt": "2024-01-01T00:00:00.000Z"
+}</code></pre>
+                </div>
+            </div>
+
+            <div class="info-box warning">
+                <div class="info-box-icon">!</div>
+                <div class="info-box-content">
+                    <p><strong>중요:</strong> 요청 본문에 포함된 필드만 업데이트됩니다. 포함되지 않은 필드는 기존 값이 유지됩니다.</p>
+                    <p>이메일 변경 시 형식 검증 및 중복 검사가 수행됩니다.</p>
+                    <p><code>userGradeId</code>, <code>departmentId</code>, <code>authorDisplayId</code>는 <code>null</code>로 설정 가능합니다 (관계 제거).</p>
+                    <p>외래 키(<code>userGradeId</code>, <code>departmentId</code>, <code>authorDisplayId</code>)는 존재 여부를 검증합니다.</p>
+                    <p>비밀번호 변경 시 최소 8자 이상이어야 합니다.</p>
+                    <p>변경 이력은 자동으로 <code>UserHistory</code>에 기록됩니다.</p>
+                </div>
+            </div>
+
+            <h4>에러 응답</h4>
+            <div class="status-list">
+                <div class="status-item">
+                    <span class="status-code s4xx">400</span>
+                    <span>유효하지 않은 사용자 ID, 유효하지 않은 이메일 형식, 이미 사용 중인 이메일, 존재하지 않는 사용자 등급/부서/저자 표시명 ID, 유효하지 않은 상태 값, 비밀번호가 8자 미만, 수정할 데이터가 없음</span>
+                </div>
+                <div class="status-item">
+                    <span class="status-code s4xx">401</span>
+                    <span>인증 실패</span>
+                </div>
+                <div class="status-item">
+                    <span class="status-code s4xx">404</span>
+                    <span>사용자를 찾을 수 없음</span>
+                </div>
+                <div class="status-item">
+                    <span class="status-code s5xx">500</span>
+                    <span>서버 오류</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
